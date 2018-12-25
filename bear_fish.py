@@ -15,8 +15,7 @@ pick_move = [ -1, 0, 1]
 ecosystem_move = []
 
 class Animal():
-	def move(self, ecosystem):
-		random_move = move_where()
+	pass
 
 class Fish(Animal):
 	pass
@@ -41,40 +40,55 @@ def update_none_list(ecosystem):
 	none = None
 	result = []
 	for i in range(0,len(ecosystem)):
-		print(type(ecosystem[i]))
-		print(type(None))
-
 		if ecosystem[i] == none:
 			result.append(i)
 	return result
 
-'''Initialize ecosystem'''
+'''Instance variables to populate a list with choice of animals'''
 fish = Fish()
 bear = Bear()
 none = None
+random_animal = [fish, bear, none]
+
+'''Set number of animals in ecosystem'''
+n = 10
+
+'''To take note of positions where no animal lives (None type)'''
 none_list = []
-for i in range(0, 10):
-	ecosystem.append(random.choice(fish, bear, none))
-	ecosystem_move.append(random.choice(-1, 2, 1))
 
+'''Start with initializing ecosystem and animals deciding 
+to move in the same iteration ----> as a TEST. Change timing of moves later'''
+for i in range(0, n+1):
+	ecosystem.append(random.choice(random_animal))
+	ecosystem_move.append(random.choice(pick_move))
+'''Indices of where no animal lives'''
 none_list = update_none_list(ecosystem)
-print(none_list)
 
-print(ecosystem_move)
+'''Each animal moves/stays'''
 for i in range(0, len(ecosystem_move)):
 	'''If animal chose not to stay, then check if the adjasent space they are moving to
 	contains the same type of animal'''
-	if not ecosystem_move[i]==0:
+	if not ecosystem_move[i] == 0 and not ecosystem[i] == None:
 		if two_of_the_same(ecosystem[i], ecosystem[ecosystem_move[i]]):
 			print(f'{ecosystem[i]} wants to move where another {ecosystem[ecosystem_move[i]]} lives.\n')
-			
-		# else:
+			'''If two of the same time, want to move to the same location, new animal of the same kind is created
+			and placed in a random "None' location'''
+
+			new_animal = type(ecosystem[i])
+			print('---->', new_animal)
+			print(ecosystem)
+			if len(none_list) > 0:
+				new_animal_space = random.choice(none_list)
+				ecosystem[new_animal_space] = new_animal
+				print(ecosystem)
+			else:
+				ecosystem.append(new_animal)
+
+		else:
 			# print(f'{ecosystem[i]} wants to move where {ecosystem[ecosystem_move[i]]} lives. Nice try.\n')
-	# else:
-	# 	print(f'{ecosystem[i]} chose to stay.\n')
-
-
-
-
-
-
+			if isinstance(ecosystem[i], Bear) and isinstance(ecosystem[ecosystem_move[i]], Fish):
+				print(f'Bear {ecosystem[i]} eats fish {ecosystem[ecosystem_move[i]]}.')
+	else:
+		'''Animal chose to stay'''
+		print(f'{ecosystem[i]} chose to stay.\n')
+	none_list = update_none_list(ecosystem)
