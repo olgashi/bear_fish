@@ -14,13 +14,10 @@ ecosystem = []
 pick_move = [ -1, 0, 1]
 ecosystem_move = []
 
-class Animal():
+class Fish():
 	pass
 
-class Fish(Animal):
-	pass
-
-class Bear(Animal):
+class Bear():
 
 	def is_fish(self, other):
 		instance(other, Fish)
@@ -75,19 +72,23 @@ for i in range(0, len(ecosystem_move)):
 			and placed in a random "None' location'''
 
 			new_animal = type(ecosystem[i])
-			print('---->', new_animal)
-			print(ecosystem)
+			# print('---->', new_animal)
+			# print(ecosystem)
 			if len(none_list) > 0:
 				new_animal_space = random.choice(none_list)
 				ecosystem[new_animal_space] = new_animal
-				print(ecosystem)
+				# print(ecosystem)
 			else:
 				ecosystem.append(new_animal)
 
 		else:
 			# print(f'{ecosystem[i]} wants to move where {ecosystem[ecosystem_move[i]]} lives. Nice try.\n')
 			if isinstance(ecosystem[i], Bear) and isinstance(ecosystem[ecosystem_move[i]], Fish):
-				print(f'Bear {ecosystem[i]} eats fish {ecosystem[ecosystem_move[i]]}.')
+				print(ecosystem)
+				ecosystem[i] = None
+				ecosystem[ecosystem_move[i]] = Bear()
+				print(f'Bear {ecosystem[i]} ate fiss {ecosystem[ecosystem_move[i]]}.')
+				print(ecosystem)
 	else:
 		'''Animal chose to stay'''
 		print(f'{ecosystem[i]} chose to stay.\n')
